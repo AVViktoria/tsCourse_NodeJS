@@ -1,24 +1,78 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+//**************************
+//     1 
+//   пример TodoList
+//**************************
 
-function App() {
+
+// import React from 'react';
+// import TodoList from "./components/TodoList"
+// const App: React.FC = () => {
+//   const todos = [{id: "1", title: "text"}]
+//   return (
+//     <div className="App">
+//       <TodoList todos={todos} />
+//     </div>
+//   );
+// }
+
+// export default App;
+
+//**************************
+//     2 
+//   пример TodoList with Refs or onChange
+//**************************
+
+// import React from 'react';
+// import TodoList from "./components/TodoList"
+// import AddTodo from "./components/AddTodo"
+// const App: React.FC = () => {
+//   const todos = [{id: "1", title: "text"}]
+//   return (
+//     <div className="App">
+//       <AddTodo />
+//       <TodoList todos={todos} />
+//     </div>
+//   );
+// }
+
+// export default App;
+
+//**************************
+//     3 
+//   пример TodoList with  onChange - События
+//**************************
+
+import React, {useState} from 'react';
+import TodoList from "./components/TodoList";
+import AddTodo from "./components/AddTodo";
+import { IItems } from "./types/todo";
+
+const App: React.FC = () => {
+
+  const [todos, setTodos] = useState<IItems[]>([]);
+
+  function todoAddHandler(todo:IItems) {
+    setTodos((prevTodos) => {
+      return [
+        ...prevTodos,
+        {
+          id: Math.random().toString(),
+          title: todo.title
+        }
+      ]
+    })
+  }
+  function todoRemoveHandler(id:string): void {
+    setTodos((prevTodos) => {
+      return prevTodos.filter((item) => {
+        return item.id!== id
+      })
+    })
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AddTodo onAddTodo={ todoAddHandler} />
+      <TodoList onRemoveTodo={todoRemoveHandler} todos={todos} />
     </div>
   );
 }
