@@ -9,12 +9,12 @@ import { useExpressServer } from "routing-controllers";
 import { IService } from "../types/serves";
 import { controllers } from "../app/domain";
 export class Tcp implements IService {
+private static instance: Tcp;
 
-
-  private routePrefix = "./api";
+  private routePrefix = "/api";
   private server = express();
 
-private static instance: Tcp;
+
 constructor() {
     if (!Tcp.instance) {
       Tcp.instance = this;
@@ -32,7 +32,7 @@ constructor() {
       defaultErrorHandler: true,
     });
 
-    return new Promise((resolve: any) => {
+    return new Promise<boolean>((resolve: any) => {
       server.listen(4000, () => {
         console.log("Tcp service started on port 4000");
         return resolve(true);
